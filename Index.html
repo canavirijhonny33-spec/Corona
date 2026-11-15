@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>14 de Noviembre · Para Carla (C.A.E.)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cinzel Decorative, Cormorant Garamond y Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Paleta Nocturna Aterciopelada: Negro Obsidiana, Azul Medianoche y Oro Rosa / Champán */
+        :root {
+            --bg-obsidian: #07070c;
+            --bg-midnight: #12101c;
+            --gold-champagne: #f3d08a;
+            --rose-gold: #e2a79c;
+            --crimson-velvet: #9e2a3b;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at 50% 15%, #191429 0%, #0d0b16 45%, #06050a 100%);
+            color: #f8f3eb;
+            overflow-x: hidden;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-royal {
+            font-family: 'Cinzel Decorative', serif;
+        }
+
+        .font-poetic {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Canvas de estrellas interactivas y partículas */
+        #starfield-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Canvas de explosiones mágicas, ondas y lluvia de pétalos */
+        #fx-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* Animaciones de lujo */
+        @keyframes floatRoyal {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.015); }
+        }
+
+        @keyframes auraPulse {
+            0%, 100% { filter: drop-shadow(0 0 18px rgba(243, 208, 138, 0.35)) drop-shadow(0 0 35px rgba(226, 167, 156, 0.2)); }
+            50% { filter: drop-shadow(0 0 28px rgba(243, 208, 138, 0.7)) drop-shadow(0 0 55px rgba(226, 167, 156, 0.45)); }
+        }
+
+        @keyframes shimmerGold {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes waxPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(243, 208, 138, 0.45), inset 0 2px 6px rgba(255,255,255,0.4); }
+            50% { box-shadow: 0 0 0 16px rgba(243, 208, 138, 0), inset 0 2px 6px rgba(255,255,255,0.4); }
+        }
+
+        @keyframes floatWhisper {
+            0% { opacity: 0; transform: translate(-50%, 10px) scale(0.9); }
+            20% { opacity: 1; transform: translate(-50%, -12px) scale(1); }
+            80% { opacity: 1; transform: translate(-50%, -32px) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -48px) scale(0.95); }
+        }
+
+        .crown-hero {
+            animation: floatRoyal 4.5s ease-in-out infinite, auraPulse 3.5s ease-in-out infinite;
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .crown-hero:active {
+            transform: scale(0.92) !important;
+        }
+
+        .text-gold-gradient {
+            background: linear-gradient(90deg, #d4a656 0%, #fff1cc 30%, #e2a79c 55%, #f3d08a 80%, #c99742 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmerGold 6s linear infinite;
+        }
+
+        /* Vidrio esmerilado oscuro aterciopelado */
+        .obsidian-glass {
+            background: linear-gradient(145deg, rgba(24, 20, 38, 0.72) 0%, rgba(12, 10, 20, 0.85) 100%);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(243, 208, 138, 0.22);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 241, 204, 0.12);
+        }
+
+        .velvet-wax-seal {
+            background: radial-gradient(circle at 30% 30%, #fce3a6, #d4a24c 55%, #8c5e1a 100%);
+            animation: waxPulse 2.8s infinite;
+        }
+
+        /* Frase flotante al tocar la corona */
+        .whisper-toast {
+            position: absolute;
+            left: 50%;
+            top: -12px;
+            pointer-events: none;
+            white-space: nowrap;
+            animation: floatWhisper 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            z-index: 40;
+        }
+
+        /* Tarjetas 3D Flip Oscuras */
+        .perspective-box {
+            perspective: 1100px;
+        }
+
+        .flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-front, .flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+        }
+
+        .flip-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(145deg, rgba(38, 22, 36, 0.92) 0%, rgba(16, 12, 24, 0.96) 100%);
+            border: 1px solid rgba(226, 167, 156, 0.45);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 25px rgba(226, 167, 156, 0.08);
+        }
+
+        /* Aparición escalonada */
+        .reveal-block {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.95s ease-out, transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="selection:bg-amber-400/30 selection:text-amber-100">
+
+    <!-- Canvas 1: Cielo estrellado, nebulosas y polvo de oro interactivo -->
+    <canvas id="starfield-canvas"></canvas>
+    <!-- Canvas 2: Ondas de luz, chispas de corona y lluvia de pétalos carmesí -->
+    <canvas id="fx-canvas"></canvas>
+
+    <!-- BARRA SUPERIOR DISCRETA: CONTROL DE AUDIO Y BOTÓN VOLVER -->
+    <header class="fixed top-0 left-0 right-0 z-40 flex justify-between items-center px-4 sm:px-8 py-4 pointer-events-none">
+        <!-- Botón Caja de Música Ambiental -->
+        <button id="music-toggle-btn" onclick="toggleAmbientMusic()" aria-label="Activar o silenciar melodía romántica" class="pointer-events-auto inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#141122]/80 hover:bg-[#1f1a33] text-amber-200/90 border border-amber-300/25 backdrop-blur-md shadow-lg transition-all text-xs font-medium active:scale-95 cursor-pointer">
+            <span id="music-indicator" class="w-2 h-2 rounded-full bg-stone-500 transition-colors"></span>
+            <svg id="music-icon-off" class="w-4 h-4 text-amber-300/70" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+            </svg>
+            <svg id="music-icon-on" class="w-4 h-4 text-amber-300 hidden animate-pulse" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
+            </svg>
+            <span id="music-label" class="hidden sm:inline">Melodía</span>
+        </button>
+
+        <!-- Botón pequeño para volver al sello inicial -->
+        <button id="back-intro-btn" onclick="returnToEnvelope()" aria-label="Volver al inicio" class="hidden pointer-events-auto inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#141122]/80 hover:bg-[#1f1a33] text-amber-200/90 border border-amber-300/25 backdrop-blur-md shadow-lg transition-all text-xs font-medium active:scale-95 cursor-pointer">
+            <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            <span>Inicio</span>
+        </button>
+    </header>
+
+    <!-- PANTALLA 1: SOBRE DE TERCIOPELO NOCTURNO Y SELLO REAL -->
+    <section id="intro-screen" class="relative z-20 min-h-screen flex flex-col items-center justify-center px-4 py-16 text-center transition-all duration-700">
+        <div class="max-w-md w-full obsidian-glass rounded-3xl p-8 sm:p-11 relative overflow-hidden">
+            <!-- Filigranas doradas en esquinas -->
+            <div class="absolute top-3.5 left-3.5 w-7 h-7 border-t border-l border-amber-300/40 rounded-tl-xl"></div>
+            <div class="absolute top-3.5 right-3.5 w-7 h-7 border-t border-r border-amber-300/40 rounded-tr-xl"></div>
+            <div class="absolute bottom-3.5 left-3.5 w-7 h-7 border-b border-l border-amber-300/40 rounded-bl-xl"></div>
+            <div class="absolute bottom-3.5 right-3.5 w-7 h-7 border-b border-r border-amber-300/40 rounded-br-xl"></div>
+
+            <!-- Resplandor interior sutil -->
+            <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <p class="uppercase tracking-[0.28em] text-[11px] font-semibold text-amber-300/80 mb-3">
+                14 de Noviembre · Día de las Coronas
+            </p>
+            <h1 class="font-royal text-2xl sm:text-3xl font-bold text-amber-50 leading-snug mb-2">
+                Para la reina que se ha robado mi corazón
+            </h1>
+            <p class="font-poetic text-xl sm:text-2xl text-rose-200/85 italic mb-8">
+                Dedicado con toda mi alma a <span id="intro-recipient" class="font-semibold text-amber-200 not-italic tracking-wider">C.A.E.</span>
+            </p>
+
+            <!-- Sello Real Interactivo -->
+            <div class="flex flex-col items-center justify-center my-6">
+                <button onclick="openRoyalEnvelope()" aria-label="Abrir carta real" class="group relative w-28 h-28 sm:w-32 sm:h-32 rounded-full velvet-wax-seal flex items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95 focus:outline-none">
+                    <span class="absolute inset-2 rounded-full border border-amber-950/35 border-dashed group-hover:rotate-90 transition-transform duration-1000"></span>
+                    
+                    <!-- Icono Corona Grabada en el Lacre -->
+                    <svg class="w-12 h-12 text-[#2b1a04] drop-shadow-sm" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 46L6 20L21 31L32 14L43 31L58 20L54 46H10Z" fill="currentColor" fill-opacity="0.9" stroke="#4a2e08" stroke-width="1.8" stroke-linejoin="round"/>
+                        <rect x="10" y="49" width="44" height="5" rx="2.5" fill="currentColor"/>
+                        <circle cx="32" cy="9.5" r="2.8" fill="currentColor"/>
+                        <circle cx="6" cy="15.5" r="2.2" fill="currentColor"/>
+                        <circle cx="58" cy="15.5" r="2.2" fill="currentColor"/>
+                    </svg>
+                </button>
+                <span class="mt-5 text-xs uppercase tracking-[0.22em] text-amber-200/80 font-medium animate-pulse">
+                    Toca el sello dorado para abrir
+                </span>
+            </div>
+
+            <p class="text-[11px] text-stone-400/90 mt-4">
+                Sube un poco el volumen para disfrutar la magia ✨
+            </p>
+        </div>
+    </section>
+
+    <!-- PANTALLA 2: UNIVERSO NOCTURNO Y DEDICATORIA REAL -->
+    <main id="main-content" class="hidden relative z-20 max-w-4xl mx-auto px-4 sm:px-6 pt-24 pb-24 space-y-16 sm:space-y-24">
+        
+        <!-- BLOQUE 1: CORONA REAL INTERACTIVA CON SONIDO MÁGICO -->
+        <section class="text-center space-y-5 reveal-block">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/10 border border-amber-300/30 text-amber-200 text-xs tracking-[0.22em] uppercase font-medium">
+                <span>14 de Noviembre</span>
+                <span class="text-rose-300">✦</span>
+                <span>Día de las Coronas</span>
+            </div>
+
+            <!-- Contenedor Interactivo de la Corona -->
+            <div class="relative flex flex-col items-center justify-center pt-4 pb-2">
+                <!-- Halo nebuloso oro rosa detrás -->
+                <div class="absolute w-56 h-56 sm:w-72 sm:h-72 rounded-full bg-gradient-to-tr from-amber-500/20 via-rose-500/20 to-purple-500/15 blur-3xl pointer-events-none"></div>
+                
+                <!-- Zona donde aparecen los susurros románticos flotantes -->
+                <div id="whisper-anchor" class="relative w-full h-4 pointer-events-none"></div>
+
+                <!-- Botón SVG Corona Real -->
+                <button id="interactive-crown-btn" onclick="tapCrown(event)" aria-label="Tocar la corona mágica" class="relative z-10 cursor-pointer focus:outline-none group select-none p-2">
+                    <svg class="w-52 h-40 sm:w-64 sm:h-48 crown-hero" viewBox="0 0 260 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- Degradado Oro Champán y Oro Rosa -->
+                            <linearGradient id="luxuryGold" x1="20" y1="20" x2="240" y2="180" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#FFF2CC"/>
+                                <stop offset="28%" stop-color="#F3D08A"/>
+                                <stop offset="60%" stop-color="#E2A79C"/>
+                                <stop offset="85%" stop-color="#D4A24C"/>
+                                <stop offset="100%" stop-color="#8C6218"/>
+                            </linearGradient>
+                            <linearGradient id="innerVelvetGold" x1="130" y1="35" x2="130" y2="155" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#7A5214"/>
+                                <stop offset="100%" stop-color="#3B2406"/>
+                            </linearGradient>
+                            <!-- Gema Rubí / Cuarzo Rosa Luminoso -->
+                            <radialGradient id="rubyHeartGem" cx="40%" cy="35%" r="65%">
+                                <stop offset="0%" stop-color="#FFD6DE"/>
+                                <stop offset="35%" stop-color="#E85D75"/>
+                                <stop offset="80%" stop-color="#9E1B32"/>
+                                <stop offset="100%" stop-color="#590918"/>
+                            </radialGradient>
+                            <!-- Perla Nacarada -->
+                            <radialGradient id="pearlLuster" cx="35%" cy="30%" r="70%">
+                                <stop offset="0%" stop-color="#FFFFFF"/>
+                                <stop offset="65%" stop-color="#F7EAD7"/>
+                                <stop offset="100%" stop-color="#B89B72"/>
+                            </radialGradient>
+                        </defs>
+
+                        <!-- Estructura posterior (profundidad 3D) -->
+                        <path d="M58 142L46 68L90 110L130 42L170 110L214 68L202 142H58Z" fill="url(#innerVelvetGold)" opacity="0.8"/>
+
+                        <!-- Cuerpo principal de la corona -->
+                        <path d="M44 145L24 60L78 106L130 30L182 106L236 60L216 145H44Z" fill="url(#luxuryGold)" stroke="#FFF6DB" stroke-width="2" stroke-linejoin="round"/>
+
+                        <!-- Filigrana interior luminosa -->
+                        <path d="M56 142C72 114 98 108 130 142C162 108 188 114 204 142" stroke="#FFF4D4" stroke-width="1.8" fill="none" opacity="0.85"/>
+                        <path d="M84 114L130 56L176 114" stroke="#FFF4D4" stroke-width="1.2" stroke-dasharray="3 3" fill="none" opacity="0.7"/>
+
+                        <!-- Diadema base -->
+                        <rect x="42" y="145" width="176" height="18" rx="9" fill="url(#luxuryGold)" stroke="#FFF6DB" stroke-width="1.8"/>
+                        <rect x="52" y="150" width="156" height="8" rx="4" fill="#3B2406" opacity="0.55"/>
+
+                        <!-- Perlas en las cumbres -->
+                        <circle cx="130" cy="20" r="8" fill="url(#pearlLuster)"/>
+                        <circle cx="22" cy="50" r="6.5" fill="url(#pearlLuster)"/>
+                        <circle cx="238" cy="50" r="6.5" fill="url(#pearlLuster)"/>
+                        <circle cx="46" cy="59" r="5" fill="url(#pearlLuster)"/>
+                        <circle cx="214" cy="59" r="5" fill="url(#pearlLuster)"/>
+
+                        <!-- Gema central Rubí Imperial -->
+                        <ellipse cx="130" cy="116" rx="12" ry="16" fill="url(#rubyHeartGem)" stroke="#FFE8B3" stroke-width="2"/>
+                        <ellipse cx="126" cy="110" rx="3.2" ry="5.5" fill="#FFFFFF" opacity="0.75" transform="rotate(-18 126 110)"/>
+
+                        <!-- Gemas engastadas en la base -->
+                        <circle cx="76" cy="154" r="4.5" fill="url(#rubyHeartGem)" stroke="#FFE8B3" stroke-width="1"/>
+                        <circle cx="103" cy="154" r="3.5" fill="url(#pearlLuster)"/>
+                        <circle cx="130" cy="154" r="6" fill="url(#rubyHeartGem)" stroke="#FFE8B3" stroke-width="1.2"/>
+                        <circle cx="157" cy="154" r="3.5" fill="url(#pearlLuster)"/>
+                        <circle cx="184" cy="154" r="4.5" fill="url(#rubyHeartGem)" stroke="#FFE8B3" stroke-width="1"/>
+
+                        <!-- Destellos estrellados alrededor -->
+                        <path d="M130 2L132 8L138 10L132 12L130 18L128 12L122 10L128 8L130 2Z" fill="#FFF2CC"/>
+                        <path d="M202 22L203.5 26.5L208 28L203.5 29.5L202 34L200.5 29.5L196 28L200.5 26.5L202 22Z" fill="#F3D08A"/>
+                        <path d="M58 22L59.5 26.5L64 28L59.5 29.5L58 34L56.5 29.5L52 28L56.5 26.5L58 22Z" fill="#E2A79C"/>
+                    </svg>
+                </button>
+
+                <!-- Indicador interactivo y contador de destellos de amor -->
+                <div class="mt-1 flex flex-col items-center gap-1.5">
+                    <span class="text-xs uppercase tracking-[0.22em] text-amber-200/85 font-medium flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-300 animate-ping"></span>
+                        Toca la corona para hacerla brillar
+                    </span>
+                    <div id="love-counter-pill" class="opacity-0 transition-opacity duration-500 px-3 py-0.5 rounded-full bg-rose-500/15 border border-rose-300/30 text-[11px] text-rose-200 font-medium">
+                        ✦ <span id="love-spark-count">0</span> destellos de amor enviados
+                    </div>
+                </div>
+            </div>
+
+            <!-- Título principal dedicado -->
+            <div class="space-y-3 pt-2">
+                <h2 class="font-royal text-3xl sm:text-5xl font-bold tracking-wide text-amber-50 leading-tight">
+                    PARA TI, <span id="display-recipient" class="text-gold-gradient">CARLA</span>
+                </h2>
+                <p class="font-poetic text-xl sm:text-2xl text-rose-200/80 italic max-w-2xl mx-auto">
+                    «En un universo lleno de estrellas fugaces, tú eres la única luz que quiero mirar toda mi vida.»
+                </p>
+            </div>
+        </section>
+
+        <!-- BLOQUE 2: CARTA DE AMOR APASIONADA Y POÉTICA -->
+        <section class="reveal-block">
+            <div class="obsidian-glass rounded-3xl p-7 sm:p-12 relative overflow-hidden">
+                <!-- Detalle luminoso en borde superior -->
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-amber-300/60 to-transparent"></div>
+
+                <!-- Ornamento divisor -->
+                <div class="flex justify-center mb-7">
+                    <div class="flex items-center gap-3 text-amber-300/75">
+                        <span class="h-px w-14 bg-gradient-to-r from-transparent to-amber-300/60"></span>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L14.8 8.5L22 9.2L16.5 14L18.2 21L12 17.3L5.8 21L7.5 14L2 9.2L9.2 8.5L12 2Z"/></svg>
+                        <span class="h-px w-14 bg-gradient-to-l from-transparent to-amber-300/60"></span>
+                    </div>
+                </div>
+
+                <!-- Cuerpo de la carta -->
+                <div id="display-message" class="font-poetic text-xl sm:text-2xl leading-relaxed text-amber-50/90 text-center space-y-5 max-w-2xl mx-auto">
+                    <p>
+                        Hoy, 14 de noviembre, el mundo celebra el Día de las Coronas, pero la verdad es que desde el instante en que llegaste a mi vida, Carla, te convertiste en la reina absoluta de cada uno de mis días y pensamientos.
+                    </p>
+                    <p>
+                        Y estoy muriendome de amor por ti, de la forma en que iluminas mis días más oscuros con una sola sonrisa, de tu ternura infinita, de tu fuerza y de esa magia tan tuya que hace que todo a tu lado tenga sentido.
+                    </p>
+                    <p>
+                        No necesitas un castillo ni un trono de oro, porque mi corazón entero es tu reino. Hoy te entrego esta corona para recordarte que eres lo más valioso, hermoso e irremplazable que tengo.
+                    </p>
+                </div>
+
+                <!-- Firma de Jhony -->
+                <div class="mt-9 pt-6 border-t border-amber-200/15 text-center">
+                    <p class="text-[11px] uppercase tracking-[0.25em] text-rose-200/70 mb-1.5">
+                        Locamente enamorado de ti,
+                    </p>
+                    <p id="display-sender" class="font-royal text-xl sm:text-2xl font-bold text-gold-gradient">
+                        Este simple plebeyo, Jhony
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOQUE 3: LAS 4 GEMAS DE TU CORONA (TARJETAS 3D CON SONIDO DE CRISTAL) -->
+        <section class="space-y-8 reveal-block">
+            <div class="text-center space-y-2">
+                <span class="text-xs uppercase tracking-[0.28em] text-rose-300/85 font-semibold">Cuatro razones eternas</span>
+                <h3 class="font-royal text-2xl sm:text-4xl font-bold text-amber-50">
+                    Las 4 Gemas de tu Corona
+                </h3>
+                <p class="text-xs sm:text-sm text-stone-400">Toca cada gema para descubrir por qué me tienes completamente enamorado</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+                <!-- Gema 1: Su Mirada -->
+                <div class="perspective-box h-52 sm:h-56 cursor-pointer" onclick="flipGemCard(this)">
+                    <div class="flip-card w-full h-full">
+                        <div class="flip-inner">
+                            <div class="flip-front obsidian-glass p-6 flex flex-col items-center justify-center text-center hover:border-amber-300/50 transition-colors">
+                                <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-300/30 text-amber-300 flex items-center justify-center mb-3.5 shadow-inner">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </div>
+                                <h4 class="font-royal text-lg sm:text-xl font-bold text-amber-100">Tu Mirada</h4>
+                                <span class="mt-2 text-[11px] uppercase tracking-widest text-amber-300/75">Toca para revelar ✦</span>
+                            </div>
+                            <div class="flip-back p-6 flex flex-col items-center justify-center text-center">
+                                <p class="font-poetic text-xl sm:text-2xl text-amber-50/95 leading-snug italic">
+                                    «En tus ojos encuentro la paz que no existe en ningún otro lugar del mundo; me pierdo en ellos cada vez que me miras.»
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gema 2: Tu Alma -->
+                <div class="perspective-box h-52 sm:h-56 cursor-pointer" onclick="flipGemCard(this)">
+                    <div class="flip-card w-full h-full">
+                        <div class="flip-inner">
+                            <div class="flip-front obsidian-glass p-6 flex flex-col items-center justify-center text-center hover:border-rose-300/50 transition-colors">
+                                <div class="w-12 h-12 rounded-2xl bg-rose-400/10 border border-rose-300/30 text-rose-300 flex items-center justify-center mb-3.5 shadow-inner">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+                                </div>
+                                <h4 class="font-royal text-lg sm:text-xl font-bold text-amber-100">Tu Alma</h4>
+                                <span class="mt-2 text-[11px] uppercase tracking-widest text-rose-300/75">Toca para revelar ✦</span>
+                            </div>
+                            <div class="flip-back p-6 flex flex-col items-center justify-center text-center">
+                                <p class="font-poetic text-xl sm:text-2xl text-amber-50/95 leading-snug italic">
+                                    «Tu nobleza, tu dulzura y la pureza con la que amas te hacen una mujer irrepetible. Eres mi mayor orgullo.»
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gema 3: Tu Risa -->
+                <div class="perspective-box h-52 sm:h-56 cursor-pointer" onclick="flipGemCard(this)">
+                    <div class="flip-card w-full h-full">
+                        <div class="flip-inner">
+                            <div class="flip-front obsidian-glass p-6 flex flex-col items-center justify-center text-center hover:border-amber-300/50 transition-colors">
+                                <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-300/30 text-amber-300 flex items-center justify-center mb-3.5 shadow-inner">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+                                </div>
+                                <h4 class="font-royal text-lg sm:text-xl font-bold text-amber-100">Tu Risa</h4>
+                                <span class="mt-2 text-[11px] uppercase tracking-widest text-amber-300/75">Toca para revelar ✦</span>
+                            </div>
+                            <div class="flip-back p-6 flex flex-col items-center justify-center text-center">
+                                <p class="font-poetic text-xl sm:text-2xl text-amber-50/95 leading-snug italic">
+                                    «Tu risa es mi melodía favorita en todo el universo, escucharte feliz es todo lo que necesito para estar bien.»
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gema 4: Tu Amor -->
+                <div class="perspective-box h-52 sm:h-56 cursor-pointer" onclick="flipGemCard(this)">
+                    <div class="flip-card w-full h-full">
+                        <div class="flip-inner">
+                            <div class="flip-front obsidian-glass p-6 flex flex-col items-center justify-center text-center hover:border-rose-300/50 transition-colors">
+                                <div class="w-12 h-12 rounded-2xl bg-rose-400/10 border border-rose-300/30 text-rose-300 flex items-center justify-center mb-3.5 shadow-inner">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
+                                </div>
+                                <h4 class="font-royal text-lg sm:text-xl font-bold text-amber-100">Tu Amor</h4>
+                                <span class="mt-2 text-[11px] uppercase tracking-widest text-rose-300/75">Toca para revelar ✦</span>
+                            </div>
+                            <div class="flip-back p-6 flex flex-col items-center justify-center text-center">
+                                <p class="font-poetic text-xl sm:text-2xl text-amber-50/95 leading-snug italic">
+                                    «El amarte siempre sera lo mas bonito que me ha podido pasar en esta vida.»
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOQUE 4: GRAN CIERRE "CORONAR A MI REINA" Y DECRETO REAL -->
+        <section class="text-center space-y-8 pt-4 reveal-block">
+            <div class="max-w-xl mx-auto space-y-6">
+                <button id="crown-queen-btn" onclick="coronateQueen()" class="group relative inline-flex items-center justify-center gap-3 px-9 py-4 rounded-full bg-gradient-to-r from-[#c8963e] via-[#f3d08a] to-[#e2a79c] text-[#1a1105] font-bold text-base sm:text-lg shadow-[0_0_35px_rgba(243,208,138,0.35)] hover:shadow-[0_0_50px_rgba(243,208,138,0.65)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer">
+                    <svg class="w-6 h-6 text-[#2b1a04] group-hover:rotate-12 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM5 19H19V21H5V19Z"/>
+                    </svg>
+                    <span>Coronar a mi Reina</span>
+                </button>
+
+                <!-- Decreto Real Romántico (se despliega al coronarla) -->
+                <div id="royal-decree" class="hidden obsidian-glass rounded-3xl p-7 sm:p-10 border-amber-300/50 relative overflow-hidden transform transition-all duration-700 scale-95 opacity-0">
+                    <!-- Esquinas ornamentales -->
+                    <div class="absolute top-3 left-3 w-5 h-5 border-t border-l border-amber-300/50"></div>
+                    <div class="absolute top-3 right-3 w-5 h-5 border-t border-r border-amber-300/50"></div>
+                    <div class="absolute bottom-3 left-3 w-5 h-5 border-b border-l border-amber-300/50"></div>
+                    <div class="absolute bottom-3 right-3 w-5 h-5 border-b border-r border-amber-300/50"></div>
+
+                    <p class="text-[11px] uppercase tracking-[0.3em] text-amber-300/80 mb-2">
+                        Decreto Oficial del Corazón
+                    </p>
+                    <h4 class="font-royal text-2xl sm:text-3xl font-bold text-gold-gradient mb-4">
+                        Reina Eterna de mi Vida
+                    </h4>
+                    <p class="font-poetic text-xl sm:text-2xl text-amber-50/90 leading-relaxed mb-5">
+                        Por medio de la presente queda coronada <span id="decree-recipient" class="font-semibold text-amber-200">La princesa Carla</span> como la única soberana de mis días, mis sueños y todo el amor de <span id="decree-sender" class="font-semibold text-rose-200">Jhony</span>.
+                    </p>
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-300/10 border border-amber-300/30 text-xs text-amber-200 tracking-widest uppercase">
+                        <span>14 de Noviembre</span>
+                        <span>·</span>
+                        <span>Por Siempre Tuyo</span>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="pt-8 text-xs text-stone-500 tracking-widest uppercase">
+                14 de Noviembre · Hecho con amor infinito para la chica que se ha robado mi corazón, Carla
+            </footer>
+        </section>
+    </main>
+
+    <script>
+        /* ==========================================================================
+           1. MOTOR DE AUDIO GENERATIVO (WEB AUDIO API - CERO ARCHIVOS EXTERNOS)
+           ========================================================================== */
+        class RoyalSoundEngine {
+            constructor() {
+                this.ctx = null;
+                this.masterGain = null;
+                this.isAmbientPlaying = false;
+                this.ambientInterval = null;
+                this.stepIndex = 0;
+            }
+
+            // Inicializar el contexto de audio tras interacción del usuario
+            init() {
+                if (!this.ctx) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioContextClass();
+                    this.masterGain = this.ctx.createGain();
+                    this.masterGain.gain.value = 0.65;
+                    this.masterGain.connect(this.ctx.destination);
+                }
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            // Sintetizador de nota cristalina estilo arpa / celesta con eco suave
+            playBellNote(freq, startTime, duration = 1.6, volume = 0.22) {
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const overtone = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                const filter = this.ctx.createBiquadFilter();
+
+                // Tono fundamental cálido + armónico cristalino (octava superior)
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, startTime);
+
+                overtone.type = 'triangle';
+                overtone.frequency.setValueAtTime(freq * 2, startTime);
+
+                const overtoneGain = this.ctx.createGain();
+                overtoneGain.gain.setValueAtTime(0.06, startTime);
+                overtoneGain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration * 0.5);
+
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(3200, startTime);
+                filter.frequency.exponentialRampToValueAtTime(900, startTime + duration);
+
+                // Envolvente suave tipo arpa
+                gain.gain.setValueAtTime(0.0001, startTime);
+                gain.gain.linearRampToValueAtTime(volume, startTime + 0.025);
+                gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+                osc.connect(filter);
+                overtone.connect(overtoneGain);
+                overtoneGain.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.masterGain);
+
+                osc.start(startTime);
+                overtone.start(startTime);
+                osc.stop(startTime + duration + 0.05);
+                overtone.stop(startTime + duration + 0.05);
+            }
+
+            // Arpegio mágico celestial al tocar la corona
+            playCrownSparkle(variation = 0) {
+                this.init();
+                const now = this.ctx.currentTime;
+                // Acordes cálidos en Fa Mayor 9 y Do Mayor 9 alternados
+                const scales = [
+                    [523.25, 659.25, 783.99, 987.77, 1174.66, 1567.98], // Cmaj9
+                    [587.33, 698.46, 880.00, 1046.50, 1318.51, 1760.00], // Dm9
+                    [440.00, 523.25, 659.25, 783.99, 987.77, 1318.51]   // Am9
+                ];
+                const notes = scales[variation % scales.length];
+                notes.forEach((freq, idx) => {
+                    this.playBellNote(freq, now + idx * 0.065, 1.8, 0.18 - idx * 0.015);
+                });
+            }
+
+            // Sonido sutil tipo cristal al girar una tarjeta de gema
+            playCrystalFlip() {
+                this.init();
+                const now = this.ctx.currentTime;
+                this.playBellNote(880, now, 0.9, 0.12);
+                this.playBellNote(1318.51, now + 0.05, 1.1, 0.10);
+            }
+
+            // Acorde triunfal y emotivo al coronar a la reina
+            playCoronationFanfare() {
+                this.init();
+                const now = this.ctx.currentTime;
+                const chord = [261.63, 329.63, 392.00, 493.88, 587.33, 783.99, 987.77, 1174.66];
+                chord.forEach((freq, i) => {
+                    this.playBellNote(freq, now + i * 0.085, 3.0, 0.17);
+                });
+            }
+
+            // Melodía romántica ambiental estilo caja de música nocturna
+            startAmbientMusic() {
+                this.init();
+                if (this.isAmbientPlaying) return;
+                this.isAmbientPlaying = true;
+
+                // Progresión romántica lenta (tipo Nocturno / Caja de música)
+                const melodyNotes = [
+                    659.25, 587.33, 523.25, 493.88, // E5 D5 C5 B4
+                    523.25, 659.25, 783.99, 659.25, // C5 E5 G5 E5
+                    587.33, 523.25, 493.88, 440.00, // D5 C5 B4 A4
+                    493.88, 587.33, 659.25, 523.25  // B4 D5 E5 C5
+                ];
+
+                const playStep = () => {
+                    if (!this.isAmbientPlaying) return;
+                    const now = this.ctx.currentTime;
+                    const note = melodyNotes[this.stepIndex % melodyNotes.length];
+                    this.playBellNote(note, now, 2.2, 0.075);
+
+                    // Nota grave suave cada 4 tiempos
+                    if (this.stepIndex % 4 === 0) {
+                        const bass = (this.stepIndex % 8 === 0) ? 130.81 : 174.61; // C3 / F3
+                        this.playBellNote(bass, now, 3.2, 0.06);
+                    }
+                    this.stepIndex++;
+                };
+
+                playStep();
+                this.ambientInterval = setInterval(playStep, 850);
+                updateMusicUI(true);
+            }
+
+            stopAmbientMusic() {
+                this.isAmbientPlaying = false;
+                if (this.ambientInterval) {
+                    clearInterval(this.ambientInterval);
+                    this.ambientInterval = null;
+                }
+                updateMusicUI(false);
+            }
+        }
+
+        const soundEngine = new RoyalSoundEngine();
+
+        function toggleAmbientMusic() {
+            if (soundEngine.isAmbientPlaying) {
+                soundEngine.stopAmbientMusic();
+            } else {
+                soundEngine.startAmbientMusic();
+            }
+        }
+
+        function updateMusicUI(isPlaying) {
+            const dot = document.getElementById('music-indicator');
+            const iconOff = document.getElementById('music-icon-off');
+            const iconOn = document.getElementById('music-icon-on');
+            const label = document.getElementById('music-label');
+
+            if (isPlaying) {
+                dot.classList.remove('bg-stone-500');
+                dot.classList.add('bg-amber-300', 'animate-ping');
+                iconOff.classList.add('hidden');
+                iconOn.classList.remove('hidden');
+                label.textContent = 'Sonando';
+            } else {
+                dot.classList.add('bg-stone-500');
+                dot.classList.remove('bg-amber-300', 'animate-ping');
+                iconOff.classList.remove('hidden');
+                iconOn.classList.add('hidden');
+                label.textContent = 'Melodía';
+            }
+        }
+
+        /* ==========================================================================
+           2. INTERACCIONES PRINCIPALES: ABRIR SOBRE, VOLVER, CORONA, GEMAS Y CIERRE
+           ========================================================================== */
+        let loveSparksCount = 0;
+        const ROMANTIC_WHISPERS = [
+            "Eres mi reina hoy y siempre, Carla 👑",
+            "Mi mundo entero gira alrededor de ti ✨",
+            "Nadie en este universo brilla como tú, C.A.E. 💫",
+            "Estoy locamente enamorado de ti, Carla ❤️",
+            "Eres mi sueño hecho realidad 🌹",
+            "El corazón de este simple plebeyo es todo tuyo 💖",
+            "Cada día me gustas más que ayer ✨",
+            "Eres lo más bonito de mi vida, princesa Carla 👑"
+        ];
+
+        function openRoyalEnvelope() {
+            // Inicia el audio y toca el arpegio mágico
+            soundEngine.playCrownSparkle(0);
+            // Inicia suave caja de música ambiental
+            soundEngine.startAmbientMusic();
+
+            const intro = document.getElementById('intro-screen');
+            const main = document.getElementById('main-content');
+            const backBtn = document.getElementById('back-intro-btn');
+
+            spawnShockwave(window.innerWidth / 2, window.innerHeight / 2);
+            spawnSparkBurst(window.innerWidth / 2, window.innerHeight / 2, 55);
+
+            intro.style.opacity = '0';
+            intro.style.transform = 'scale(0.94)';
+
+            setTimeout(() => {
+                intro.classList.add('hidden');
+                main.classList.remove('hidden');
+                backBtn.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                const blocks = main.querySelectorAll('.reveal-block');
+                blocks.forEach((el, idx) => {
+                    setTimeout(() => el.classList.add('visible'), idx * 240);
+                });
+            }, 600);
+        }
+
+        function returnToEnvelope() {
+            soundEngine.playCrystalFlip();
+
+            const intro = document.getElementById('intro-screen');
+            const main = document.getElementById('main-content');
+            const backBtn = document.getElementById('back-intro-btn');
+
+            main.style.opacity = '0';
+            backBtn.classList.add('hidden');
+
+            setTimeout(() => {
+                main.classList.add('hidden');
+                main.style.opacity = '1';
+
+                // Reiniciar animaciones de aparición para cuando vuelva a entrar
+                main.querySelectorAll('.reveal-block').forEach(el => el.classList.remove('visible'));
+
+                intro.classList.remove('hidden');
+                intro.style.opacity = '0';
+                intro.style.transform = 'scale(0.96)';
+
+                requestAnimationFrame(() => {
+                    intro.style.opacity = '1';
+                    intro.style.transform = 'scale(1)';
+                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 350);
+        }
+
+        function tapCrown(event) {
+            loveSparksCount++;
+            soundEngine.playCrownSparkle(loveSparksCount);
+
+            // Actualizar contador de destellos
+            const pill = document.getElementById('love-counter-pill');
+            const counterEl = document.getElementById('love-spark-count');
+            pill.classList.remove('opacity-0');
+            counterEl.textContent = loveSparksCount;
+
+            // Obtener coordenadas del centro de la corona para ondas y partículas
+            const btn = document.getElementById('interactive-crown-btn');
+            const rect = btn.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+
+            spawnShockwave(cx, cy);
+            spawnSparkBurst(cx, cy, 42);
+
+            // Mostrar susurro romántico flotante
+            const anchor = document.getElementById('whisper-anchor');
+            const toast = document.createElement('div');
+            toast.className = 'whisper-toast px-4 py-1.5 rounded-full bg-[#1b152b]/90 border border-amber-300/45 text-amber-100 font-poetic text-lg sm:text-xl italic shadow-[0_0_20px_rgba(243,208,138,0.3)]';
+            toast.textContent = ROMANTIC_WHISPERS[(loveSparksCount - 1) % ROMANTIC_WHISPERS.length];
+            anchor.appendChild(toast);
+
+            setTimeout(() => {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 2450);
+        }
+
+        function flipGemCard(wrapper) {
+            const card = wrapper.querySelector('.flip-card');
+            card.classList.toggle('flipped');
+            soundEngine.playCrystalFlip();
+        }
+
+        function coronateQueen() {
+            soundEngine.playCoronationFanfare();
+            launchCrimsonAndGoldRain(160);
+
+            const btn = document.getElementById('crown-queen-btn');
+            const decree = document.getElementById('royal-decree');
+
+            btn.innerHTML = `
+                <svg class="w-6 h-6 text-[#2b1a04]" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                <span>¡Reina Coronada!</span>
+            `;
+
+            decree.classList.remove('hidden');
+            setTimeout(() => {
+                decree.classList.remove('scale-95', 'opacity-0');
+                decree.classList.add('scale-100', 'opacity-100');
+                decree.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 50);
+        }
+
+        /* ==========================================================================
+           3. CANVAS 1: CIELO ESTRELLADO, NEBULOSAS Y ESTELA DORADA DEL CURSOR/TOQUE
+           ========================================================================== */
+        const starCanvas = document.getElementById('starfield-canvas');
+        const sCtx = starCanvas.getContext('2d');
+        let stars = [];
+        let pointerTrail = [];
+
+        function resizeCanvases() {
+            starCanvas.width = window.innerWidth;
+            starCanvas.height = window.innerHeight;
+            fxCanvas.width = window.innerWidth;
+            fxCanvas.height = window.innerHeight;
+        }
+
+        class NightStar {
+            constructor() {
+                this.reset(true);
+            }
+            reset(initial = false) {
+                this.x = Math.random() * starCanvas.width;
+                this.y = initial ? Math.random() * starCanvas.height : starCanvas.height + 5;
+                this.r = Math.random() * 1.8 + 0.4;
+                this.vy = -(Math.random() * 0.25 + 0.05);
+                this.twinkle = Math.random() * Math.PI * 2;
+                this.twinkleSpeed = Math.random() * 0.03 + 0.01;
+                this.isRose = Math.random() > 0.7;
+            }
+            update() {
+                this.y += this.vy;
+                this.twinkle += this.twinkleSpeed;
+                if (this.y < -5) this.reset();
+            }
+            draw() {
+                const alpha = 0.25 + 0.65 * (0.5 + 0.5 * Math.sin(this.twinkle));
+                sCtx.beginPath();
+                sCtx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                sCtx.fillStyle = this.isRose
+                    ? `rgba(226, 167, 156, ${alpha})`
+                    : `rgba(243, 208, 138, ${alpha})`;
+                sCtx.fill();
+            }
+        }
+
+        function initStarfield() {
+            stars = [];
+            const count = Math.min(95, Math.floor((window.innerWidth * window.innerHeight) / 14000));
+            for (let i = 0; i < count; i++) {
+                stars.push(new NightStar());
+            }
+        }
+
+        function addPointerSpark(x, y) {
+            if (pointerTrail.length > 45) pointerTrail.shift();
+            pointerTrail.push({
+                x,
+                y,
+                vx: (Math.random() - 0.5) * 0.8,
+                vy: (Math.random() - 0.5) * 0.8 - 0.3,
+                size: Math.random() * 2.5 + 1,
+                life: 1
+            });
+        }
+
+        window.addEventListener('mousemove', (e) => addPointerSpark(e.clientX, e.clientY));
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                addPointerSpark(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        function animateStarfield() {
+            sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+
+            stars.forEach(s => {
+                s.update();
+                s.draw();
+            });
+
+            pointerTrail = pointerTrail.filter(p => p.life > 0);
+            pointerTrail.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life = Math.max(0, p.life - 0.025);
+                if (p.life <= 0) return;
+
+                sCtx.beginPath();
+                sCtx.arc(p.x, p.y, Math.max(0.01, p.size * p.life), 0, Math.PI * 2);
+                sCtx.fillStyle = `rgba(255, 236, 179, ${p.life * 0.75})`;
+                sCtx.fill();
+            });
+
+            requestAnimationFrame(animateStarfield);
+        }
+
+        /* ==========================================================================
+           4. CANVAS 2: ONDAS EXPANSIVAS, CHISPAS DE CORONA Y PÉTALOS CARMESÍ
+           ========================================================================== */
+        const fxCanvas = document.getElementById('fx-canvas');
+        const fCtx = fxCanvas.getContext('2d');
+        let shockwaves = [];
+        let burstSparks = [];
+        let royalPetals = [];
+
+        function spawnShockwave(x, y) {
+            shockwaves.push({ x, y, radius: 15, maxRadius: 230, alpha: 0.85 });
+            setTimeout(() => {
+                shockwaves.push({ x, y, radius: 10, maxRadius: 170, alpha: 0.65 });
+            }, 110);
+        }
+
+        function spawnSparkBurst(x, y, count = 40) {
+            const colors = ['#FFF2CC', '#F3D08A', '#E2A79C', '#FF8FA3'];
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5.5 + 1.5;
+                burstSparks.push({
+                    x,
+                    y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 1.2,
+                    size: Math.random() * 3.5 + 1.5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 1,
+                    decay: Math.random() * 0.02 + 0.015
+                });
+            }
+        }
+
+        function launchCrimsonAndGoldRain(amount = 150) {
+            const palette = ['#9e1b32', '#c92a42', '#e2a79c', '#f3d08a', '#fff2cc'];
+            for (let i = 0; i < amount; i++) {
+                royalPetals.push({
+                    x: Math.random() * fxCanvas.width,
+                    y: -20 - Math.random() * (fxCanvas.height * 0.5),
+                    size: Math.random() * 7 + 5,
+                    vy: Math.random() * 2.6 + 1.6,
+                    vx: (Math.random() - 0.5) * 1.8,
+                    sway: Math.random() * Math.PI * 2,
+                    rot: Math.random() * 360,
+                    rotSpeed: (Math.random() - 0.5) * 4,
+                    isGoldSpark: Math.random() > 0.55,
+                    color: palette[Math.floor(Math.random() * palette.length)],
+                    alpha: 1
+                });
+            }
+        }
+
+        function animateFX() {
+            fCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+
+            // Ondas de luz expansivas
+            shockwaves = shockwaves.filter(w => w.alpha > 0.01);
+            shockwaves.forEach(w => {
+                w.radius += (w.maxRadius - w.radius) * 0.07;
+                w.alpha *= 0.94;
+                fCtx.beginPath();
+                fCtx.arc(w.x, w.y, w.radius, 0, Math.PI * 2);
+                fCtx.strokeStyle = `rgba(243, 208, 138, ${w.alpha})`;
+                fCtx.lineWidth = 2;
+                fCtx.stroke();
+            });
+
+            // Chispas explosivas al picar corona
+            burstSparks = burstSparks.filter(p => p.life > 0);
+            burstSparks.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.06; // gravedad suave
+                p.vx *= 0.98;
+                p.life -= p.decay;
+
+                fCtx.save();
+                fCtx.globalAlpha = Math.max(0, p.life);
+                fCtx.fillStyle = p.color;
+                fCtx.beginPath();
+                fCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                fCtx.fill();
+                fCtx.restore();
+            });
+
+            // Lluvia de pétalos carmesí y destellos dorados
+            royalPetals = royalPetals.filter(p => p.alpha > 0 && p.y < fxCanvas.height + 30);
+            royalPetals.forEach(p => {
+                p.y += p.vy;
+                p.sway += 0.04;
+                p.x += p.vx + Math.sin(p.sway) * 1.1;
+                p.rot += p.rotSpeed;
+                if (p.y > fxCanvas.height - 90) p.alpha -= 0.015;
+
+                fCtx.save();
+                fCtx.translate(p.x, p.y);
+                fCtx.rotate((p.rot * Math.PI) / 180);
+                fCtx.globalAlpha = Math.max(0, p.alpha);
+                fCtx.fillStyle = p.color;
+
+                if (p.isGoldSpark) {
+                    const s = p.size * 0.9;
+                    fCtx.beginPath();
+                    fCtx.moveTo(0, -s);
+                    fCtx.quadraticCurveTo(0, 0, s, 0);
+                    fCtx.quadraticCurveTo(0, 0, 0, s);
+                    fCtx.quadraticCurveTo(0, 0, -s, 0);
+                    fCtx.quadraticCurveTo(0, 0, 0, -s);
+                    fCtx.fill();
+                } else {
+                    fCtx.beginPath();
+                    fCtx.ellipse(0, 0, p.size * 0.55, p.size, 0, 0, Math.PI * 2);
+                    fCtx.fill();
+                }
+                fCtx.restore();
+            });
+
+            requestAnimationFrame(animateFX);
+        }
+
+        /* ==========================================================================
+           5. INICIALIZACIÓN GLOBAL
+           ========================================================================== */
+        window.addEventListener('resize', () => {
+            resizeCanvases();
+            initStarfield();
+        });
+
+        window.onload = function () {
+            resizeCanvases();
+            initStarfield();
+            animateStarfield();
+            animateFX();
+        };
+    </script>
+</body>
+</html>
